@@ -1,21 +1,15 @@
-# Flask App Routing
+from src.mlproject.logger import logging
+from src.mlproject.exception import CustomException
+from src.mlproject.components.data_ingestion import DataIngestion
+from src.mlproject.components.data_ingestion import DataIngestionConfig
+import sys
 
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route("/", methods=["GET"])
-def welcome():
-    return "<h1>Welcome to Flask App!</h1>"
-@app.route("/index", methods=["GET"]) # by default method is GET only. 
-def index():
-    return "Welcome to Index Page!"
-
-@app.route("/success")
-def success():
-    return "Welcome to Success Page!"
-
-
-
-if __name__ == "__main__": # entry point for the program
-    app.run(debug=True) # run the flask app in debug mode(reload automatically)
+if __name__ == "__main__":
+    logging.info("the execution has started")
+    
+    try:
+        data_ingestion = DataIngestion()
+        data_ingestion.initiate_data_ingestion()
+    except Exception as e:
+        logging.info("Custom Exception")
+        raise CustomException(e, sys)

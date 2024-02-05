@@ -1,1 +1,10 @@
 Flask
+# stuff gets installed in the venv folder by using "pip install -r requirements.txt"
+numpy
+pandas
+# -e .
+
+python-dotenv
+mysql-connector-python
+pymysql
+scikit-learn
