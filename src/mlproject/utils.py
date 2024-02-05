@@ -36,3 +36,4 @@ def read_sql_data():
         
     except Exception as e:
         raise CustomException(e) 
+
