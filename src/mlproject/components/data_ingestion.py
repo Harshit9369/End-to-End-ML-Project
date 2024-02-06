@@ -27,7 +27,10 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         try:
             # reading the data from SQL
-            df = read_sql_data()
+            # df = read_sql_data() -> once the data has been read through sql, we don't need to do this 
+            df = pd.read_csv(os.path.join('notebook/data', 'raw.csv'))
+            # the sql data has been read and saved into a csv file in the notebook/data folder which 
+            # we are reading here.
             
             logging.info("Reading completed SQL DataBase")
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)

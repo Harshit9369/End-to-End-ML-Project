@@ -9,6 +9,8 @@ import pandas as pd
 from dotenv import load_dotenv
 import pymysql # python mysql connector
 
+import pickle
+import numpy 
 
 load_dotenv()
 # used to read data from the .env file
@@ -37,3 +39,15 @@ def read_sql_data():
     except Exception as e:
         raise CustomException(e) 
 
+# the below function is used to save the object into a file (pickle) in write mode and the 
+# pickle file is saved in the artifacts folder
+def save_object(file_path, obj):
+    try:
+        dir_path = os.path.dirname(file_path)
+        os.makedirs(dir_path, exist_ok=True)
+        
+        with open(file_path, "wb") as file_obj:
+            pickle.dump(obj, file_obj)
+            
+    except Exception as e:
+        raise CustomException(e, sys)
