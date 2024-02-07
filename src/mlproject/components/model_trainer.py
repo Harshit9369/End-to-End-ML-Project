@@ -1,5 +1,8 @@
 import os
 import sys
+import mlflow
+import numpy as np
+from urllib.parse import urlparse
 from dataclasses import dataclass
 
 from catboost import CatBoostRegressor
@@ -13,6 +16,7 @@ from sklearn.metrics import r2_score
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from xgboost import XGBRegressor
+from sklearn.metrics import mean_squared_error,mean_absolute_error
 
 from src.mlproject.exception import CustomException
 from src.mlproject.logger import logging
@@ -26,6 +30,12 @@ class ModelTrainerConfig:
 class ModelTrainer:
     def __init__(self):
         self.model_trainer_config = ModelTrainerConfig()
+        
+    def eval_metrics(self,actual, pred):
+        rmse = np.sqrt(mean_squared_error(actual, pred))
+        mae = mean_absolute_error(actual, pred)
+        r2 = r2_score(actual, pred)
+        return rmse, mae, r2
         
     def initiate_model_trainer(self, train_array, test_array):
         try:
@@ -96,6 +106,43 @@ class ModelTrainer:
                 list(model_report.values()).index(best_model_score)
             ]
             best_model = models[best_model_name]
+            
+            print("This is the Best Model:")
+            print(best_model_name)
+            
+            # MLFLOW AND DAGSHUB CONFIG STARTS:
+            model_names = list(params.keys())
+            
+            actual_model = ""
+            for model in model_names:
+                if best_model_name == model:
+                    actual_model = actual_model + model
+                    
+            best_params = params[actual_model]
+            
+            mlflow.set_registry_uri("https://dagshub.com/Harshit9369/End-to-End-ML-Project.mlflow")
+            tracking_uri_type_store = urlparse(mlflow.get_tracking_uri()).scheme
+            
+            
+            with mlflow.start_run():
+                predicted_qualities = best_model.predict(X_test)
+                
+                (rmse, mae, r2) = self.eval_metrics(y_test, predicted_qualities)
+                
+                mlflow.log_params(best_params)
+                mlflow.log_metric("rmse", rmse)
+                mlflow.log_metric("r2", r2)
+                mlflow.log_metric("mae", mae)
+                
+                # model registry does not work with file store
+                
+                if tracking_uri_type_store != "file":
+                    # above is the url that would be available through DAGSHUB
+                    
+                    # Register the Model
+                    # there are other ways to use the Model Registry, which depends on the 
+                    mlflow.sklearn.log_model(best_model, "model", registered_model_name=actual_model)
+            
             
             if best_model_score < 0.6:
                 raise CustomException ("No Best Model found!")

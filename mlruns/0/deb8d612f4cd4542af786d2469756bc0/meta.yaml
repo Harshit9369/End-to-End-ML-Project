@@ -1,0 +1,15 @@
+artifact_uri: file:///home/harshit/ML-DL-Projects/mlruns/0/deb8d612f4cd4542af786d2469756bc0/artifacts
+end_time: 1707313898272
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: deb8d612f4cd4542af786d2469756bc0
+run_name: marvelous-zebra-148
+run_uuid: deb8d612f4cd4542af786d2469756bc0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707313898265
+status: 4
+tags: []
+user_id: harshit

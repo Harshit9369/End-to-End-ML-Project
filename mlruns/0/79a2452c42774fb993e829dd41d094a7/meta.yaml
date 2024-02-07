@@ -1,0 +1,15 @@
+artifact_uri: file:///home/harshit/ML-DL-Projects/mlruns/0/79a2452c42774fb993e829dd41d094a7/artifacts
+end_time: 1707314250315
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 79a2452c42774fb993e829dd41d094a7
+run_name: bustling-donkey-600
+run_uuid: 79a2452c42774fb993e829dd41d094a7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707314250306
+status: 3
+tags: []
+user_id: harshit
